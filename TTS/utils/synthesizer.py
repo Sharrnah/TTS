@@ -291,7 +291,23 @@ class Synthesizer(nn.Module):
         if text:
             sens = self.split_into_sentences(text)
             print(" > Text splitted to sentences.")
-            print(sens)
+            #print(sens)
+            try:
+                for sentence in sens:
+                    # Ensure that the sentence is a string
+                    if isinstance(sentence, str):
+                        # Encode and decode each string in the list
+                        safe_print = sentence.encode('utf-8', 'ignore').decode('utf-8', 'ignore')
+                    else:
+                        # If the item is not a string, convert it to a string and handle encoding
+                        safe_print = str(sentence).encode('utf-8', 'ignore').decode('utf-8', 'ignore')
+                        safe_print = "Non-string item found in the list: " + safe_print
+
+                    print(safe_print)
+            except Exception as e:
+                # Convert the exception to a string and handle encoding, then print
+                safe_error_message = str(e).encode('utf-8', 'ignore').decode('utf-8', 'ignore')
+                print("Exception occurred: ", safe_error_message)
 
         # handle multi-speaker
         if "voice_dir" in kwargs:
